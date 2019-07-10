@@ -1,5 +1,7 @@
 <?php
 
+use Da\User\Component\AuthDbManagerComponent;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -26,10 +28,17 @@ $config = [
             ],
         ],
         'db' => $db,
-		'authManager'  => [
-        'class'        => 'yii\rbac\DbManager',
-			//            'defaultRoles' => ['guest'],
-		],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
+        'authManager'  => [
+            'class'        => Da\User\Component\AuthDbManagerComponent::class,
+            'defaultRoles' => ['user'],
+        ],
     ],
     'params' => $params,
     /*
@@ -39,6 +48,21 @@ $config = [
         ],
     ],
     */
+    'modules' => [
+        'user' =>  Da\User\Module::class,
+    ],
+    'controllerMap' => [
+        'migrate' => [
+            'class' => \yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@yii/rbac/migrations', // Just in case you forgot to run it on console (see next note)
+            ],
+            'migrationNamespaces' => [
+                'Da\User\Migration',
+            ],
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

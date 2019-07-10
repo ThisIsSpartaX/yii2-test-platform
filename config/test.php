@@ -24,9 +24,6 @@ return [
         'urlManager' => [
             'showScriptName' => true,
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-        ],
         'request' => [
             'cookieValidationKey' => 'test',
             'enableCsrfValidation' => false,
@@ -37,6 +34,66 @@ return [
             ],
             */
         ],
+        'view' => [
+            'theme' => [
+                'basePath' => '@app/views',
+                'baseUrl' => '@web/views',
+                'pathMap' => [
+                    '@Da/User/resources/views/registration' => '@app/views/registration',
+                    '@Da/User/resources/views/settings' => '@app/views/settings'
+                ],
+            ],
+        ],
+        'i18n' => [
+            'translations' => [
+                'usuario*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@Da/User/resources/i18n',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'usuario' => 'usuario.php',
+                    ],
+                ],
+                'custom' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages/i18n',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'custom' => 'custom.php',
+                    ],
+                ],
+            ],
+        ],
     ],
     'params' => $params,
+    'modules' => [
+        'user' => [
+            'class' => Da\User\Module::class,
+            // ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.
+            // 'generatePasswords' => true,
+            // 'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
+            'administrators' => [
+                'user'
+            ],
+            'classMap' => [
+                'Profile' => 'app\models\Profile',
+                'RegistrationForm' => 'app\forms\RegistrationForm'
+            ],
+            'controllerMap' => [
+                'registration' => 'app\controllers\RegistrationController'
+            ],
+        ]
+    ],
+    'controllerMap' => [
+        'migrate' => [
+            'class' => \yii\console\controllers\MigrateController::class,
+            'migrationPath' => [
+                '@app/migrations',
+                '@yii/rbac/migrations', // Just in case you forgot to run it on console (see next note)
+            ],
+            'migrationNamespaces' => [
+                'Da\User\Migration',
+            ],
+        ],
+    ],
 ];
