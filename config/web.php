@@ -19,10 +19,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
+//        'user' => [
+//            'identityClass' => 'app\models\User',
+//            'enableAutoLogin' => true,
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -51,8 +51,24 @@ $config = [
             ],
         ],
         */
+		'user' => [
+			'identityClass' => 'app\models\User',
+			'enableAutoLogin' => true,
+		],
+		'authManager'  => [
+			'class'        => 'yii\rbac\DbManager',
+			//            'defaultRoles' => ['guest'],
+		],
     ],
     'params' => $params,
+	'modules' => [
+		'user' => [
+			'class' => Da\User\Module::class,
+			// ...other configs from here: [Configuration Options](installation/configuration-options.md), e.g.
+			// 'generatePasswords' => true,
+			// 'switchIdentitySessionKey' => 'myown_usuario_admin_user_key',
+		]
+	]
 ];
 
 if (YII_ENV_DEV) {
