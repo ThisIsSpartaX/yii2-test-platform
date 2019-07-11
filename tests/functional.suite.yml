@@ -10,4 +10,14 @@ class_name: FunctionalTester
 modules:
     enabled:
       - Filesystem
-      - Yii2
+      - Yii2:
+          cleanup: false
+      - Asserts
+      - Db:
+          populate: true
+          cleanup: true
+          reconnect: false
+          dsn: mysql:host=localhost;dbname=yii2_basic_tests
+          user: root
+          password: root
+          dump: tests/_data/schema.sql
