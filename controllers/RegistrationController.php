@@ -63,9 +63,6 @@ class RegistrationController extends BaseRegistrationController
             //Run user register method
             if ($this->make(UserRegisterService::class, [$user, $mailService])->run()) {
                 if ($this->module->enableEmailConfirmation) {
-
-                    var_dump(        $this->module->behaviors());
-
                     Yii::$app->session->setFlash(
                         'info',
                         Yii::t(
